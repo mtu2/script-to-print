@@ -1,56 +1,88 @@
 import React, { ReactElement, useCallback, useState } from "react";
 import Buttons from "../Buttons/Buttons";
 
-import { useDropzone } from "react-dropzone";
-import { ReactComponent as DropHereIcon } from "../../icons/drop-here-48dp.svg";
+import { FileWithPath, useDropzone } from "react-dropzone";
 import styles from "./ImageSelect.module.scss";
+import { ReactComponent as DropHereIcon } from "../../icons/drop-here-48dp.svg";
+import { ReactComponent as PhotoIcon } from "../../icons/photo-white-48dp.svg";
 
 export interface ImageFile {
   type: "image/jpeg" | "image/png";
+}
+
+interface ImageFileInfo {
+  name: string;
+  sizeMb: string;
 }
 
 interface Props {
   handleContinue: (file: ImageFile) => void;
 }
 
-const action = (
-  <>
-    <DropHereIcon className={styles.icon} />
-    <h2>
-      <strong>1. Drag image here</strong> or <strong>select image</strong>
-    </h2>
-    <p>Maximum filesize: 4mb, Allowed files: .jpeg, .png</p>
-  </>
-);
-const done = (
-  <h2>
-    <strong>Done!</strong> Upload received
-  </h2>
-);
-const wrongFile = (
-  <h2>
-    <strong>Incompatible file!</strong> Please submit a .jpeg or .png
-  </h2>
-);
-
 function ImageSelect(props: Props): ReactElement {
   const [file, setFile] = useState<ImageFile | null>(null);
-  const [displayContent, setDisplayContent] = useState(action);
+  const [fileInfo, setFileInfo] = useState<ImageFileInfo | null>(null);
+  const [displayContent, setDisplayContent] = useState("ACTION");
 
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: any): void => {
+  const onDrop = useCallback((files: FileWithPath[]): void => {
+    files.forEach((file: FileWithPath): void => {
       if (file.type !== "image/jpeg" && file.type !== "image/png") {
         // If file is not an image file
         console.log("wrong file type given");
-        setDisplayContent(wrongFile);
+        setDisplayContent("WRONG_FILE");
         return;
       }
 
-      setFile(file);
-      setDisplayContent(done);
+      setFile(file as ImageFile);
+      setFileInfo({
+        name: file.name,
+        sizeMb: `${(file.size / 1000000).toFixed(2)}mb`,
+      });
+      setDisplayContent("DONE");
     });
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  function getContent() {
+    switch (displayContent) {
+      case "ACTION":
+        return (
+          <div className={styles.actionContainer}>
+            <DropHereIcon className={styles.dropHereIcon} />
+            <h2>
+              <strong>1. Drag image here</strong> or{" "}
+              <strong>select image</strong>
+            </h2>
+            <p>Allowed files: .jpeg, .png</p>
+          </div>
+        );
+      case "DONE":
+        return (
+          <div className={styles.doneContainer}>
+            <h2>
+              <strong>Done!</strong> Upload received
+            </h2>
+            <div className={styles.fileInfoContainer}>
+              <PhotoIcon className={styles.photoIcon} />
+              <p className={styles.fileName}>
+                {fileInfo && fileInfo.name}
+                <span className={styles.fileSize}>
+                  {fileInfo && fileInfo.sizeMb}
+                </span>
+              </p>
+            </div>
+          </div>
+        );
+      case "WRONG_FILE":
+        return (
+          <div className={styles.wrongFileContainer}>
+            <h2>
+              <strong>Incompatible file!</strong> Please submit a .jpeg or .png
+            </h2>
+          </div>
+        );
+    }
+  }
 
   return (
     <div className={styles.imageSelect}>
@@ -62,7 +94,7 @@ function ImageSelect(props: Props): ReactElement {
       >
         <input {...getInputProps()} />
         <div className={styles.dashedLine} />
-        {displayContent}
+        {getContent()}
       </div>
       {file && (
         <Buttons

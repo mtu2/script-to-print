@@ -12,15 +12,11 @@
     position: relative;
     background-color: #5a5a5a;
     border-radius: 5px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
     color: white;
 
     height: 360px;
     transition: background-color 200ms ease-in-out;
-
-    .icon {
-      width: 88px;
-      height: 88px;
-    }
 
     h2 {
       font-size: 18px;
@@ -33,7 +29,54 @@
     }
 
     p {
-      font-size: 14px;
+      font-size: 16px;
+    }
+
+    .actionContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 40px;
+
+      .dropHereIcon {
+        width: 88px;
+        height: 88px;
+        margin-bottom: 8px;
+      }
+    }
+    .doneContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 40px;
+
+      .fileInfoContainer {
+        display: flex;
+        align-items: center;
+
+        padding: 4px 60px;
+        background-color: white;
+        color: black;
+
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+
+        .photoIcon {
+          width: 28px;
+          height: 28px;
+          margin-right: 32px;
+          fill: #3bb5e9;
+        }
+        .fileName {
+          font-size: 16px;
+          .fileSize {
+            font-size: 14px;
+            margin-left: 32px;
+          }
+        }
+      }
+    }
+    .wrongFileContainer {
       margin-bottom: 40px;
     }
 
