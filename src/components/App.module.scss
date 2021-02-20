@@ -1,0 +1,45 @@
+.app {
+  width: 100vw;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    padding: 24px 40px;
+
+    p:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  .main {
+    margin-top: 60px;
+    width: 880px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 24px 40px;
+    width: 100%;
+
+    p {
+      font-size: 14px;
+    }
+  }
+}

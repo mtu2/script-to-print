@@ -1,0 +1,41 @@
+.buttons {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 14px;
+
+  button {
+    width: 200px;
+    height: 40px;
+    border-radius: 5px;
+
+    font-size: 18px;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .continueBtn {
+    background: #6bb78e;
+    .icon {
+      margin-left: 20px;
+    }
+  }
+  .backBtn {
+    background: #5a5a5a;
+    .icon {
+      margin-right: 20px;
+    }
+  }
+
+  &.disableBack {
+    justify-content: flex-end;
+  }
+}
