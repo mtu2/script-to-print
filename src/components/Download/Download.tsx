@@ -11,6 +11,10 @@ interface Props {
   options: Options;
 }
 
+interface CharWidthDict {
+  [key: string]: number;
+}
+
 function Download({ imageFile, text, options }: Props): ReactElement {
   const [created, setCreated] = useState(false);
   const [downloadLink, setDownloadLink] = useState<string | null>(null);
@@ -19,6 +23,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
 
   useEffect(() => {
     (function loadImage(): void {
+      console.time("Create print");
       const reader = new FileReader();
 
       reader.onabort = () => console.log("File reading was aborted");
@@ -76,7 +81,6 @@ function Download({ imageFile, text, options }: Props): ReactElement {
 
       // Set download link
       setCreated(true);
-      console.log(imgCanvas.toDataURL("image/png"));
       setDownloadLink(imgCanvas.toDataURL("image/png"));
     }
 
@@ -106,39 +110,49 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       textCtx.font = `400 18px EB Garamond`; // USE OPTIONS
       textCtx.fillStyle = "rgb(0, 0, 0)";
 
-      let i = 0;
+      // Set variables
+      const charWidthDict = getCharWidthDict(textCtx);
+
+      let start = 0;
+      let curr = 0;
       let filledHeight = 18;
 
-      let lineCount = 0;
-      let avgLineChars = 0;
-
       while (filledHeight < height) {
-        let line: string;
-        if (lineCount === 0) {
-          line = "";
+        let line = "";
+        let lineWidth = 0;
 
-          while (textCtx.measureText(line).width < width) {
-            line += processedText[i];
-            if (i + 1 > processedText.length) i = 0;
-            else i++;
+        while (lineWidth < width) {
+          lineWidth += charWidthDict[processedText[curr]];
+
+          if (curr + 1 > processedText.length) {
+            line += processedText.substring(start, curr);
+            start = curr = 0;
+          } else {
+            curr++;
           }
-
-          avgLineChars = line.length;
-        } else {
-          line = processedText.substring(i, i + Math.min(0, avgLineChars - 50));
         }
+
+        line += processedText.substring(start, curr);
+        start = curr;
 
         textCtx.fillText(line, 0, filledHeight);
         filledHeight += 18; //LINE_HEIGHT = 18
-        lineCount++;
       }
     }
 
-    function searchIndex(
-      text: string,
-      textCtx: CanvasRenderingContext2D,
-      width: number
-    ): void {}
+    function getCharWidthDict(
+      textCtx: CanvasRenderingContext2D
+    ): CharWidthDict {
+      const ascii =
+        " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      const charWidthDict: CharWidthDict = {};
+
+      for (let char of ascii) {
+        charWidthDict[char] = textCtx.measureText(char).width;
+      }
+
+      return charWidthDict;
+    }
 
     function createPrint(
       imgCtx: CanvasRenderingContext2D,
@@ -166,6 +180,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       }
 
       imgCtx.putImageData(imgData, 0, 0);
+      console.timeEnd("Create print");
     }
   }, [imageFile, text, options]);
 
