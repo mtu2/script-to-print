@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import styles from "./Download.module.scss";
-import Loader from "../UI/Loader/Loader";
 import { ImageFile } from "../ImageSelect/ImageSelect";
 import { Options } from "../OptionSelect/OptionSelect";
 import { processText } from "../../utils/text";
@@ -9,10 +8,6 @@ interface Props {
   imageFile: ImageFile;
   text: string;
   options: Options;
-}
-
-interface CharWidthDict {
-  [key: string]: number;
 }
 
 function Download({ imageFile, text, options }: Props): ReactElement {
@@ -111,7 +106,9 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       textCtx.fillStyle = "rgb(0, 0, 0)";
 
       // Set variables
-      const charWidthDict = getCharWidthDict(textCtx);
+      const charWidthDict: {
+        [key: string]: number;
+      } = {};
 
       let start = 0;
       let curr = 0;
@@ -121,10 +118,17 @@ function Download({ imageFile, text, options }: Props): ReactElement {
         let line = "";
         let lineWidth = 0;
 
-        while (lineWidth < width) {
-          lineWidth += charWidthDict[processedText[curr]];
+        // 75px buffer for text - as lineWidth seems to be larger than actual (?)
+        while (lineWidth < width + 75) {
+          const char = processedText[curr];
 
-          if (curr + 1 > processedText.length) {
+          if (!charWidthDict.hasOwnProperty(char)) {
+            charWidthDict[char] = textCtx.measureText(char).width;
+          }
+
+          lineWidth += charWidthDict[char];
+
+          if (curr + 1 >= processedText.length) {
             line += processedText.substring(start, curr);
             start = curr = 0;
           } else {
@@ -133,25 +137,11 @@ function Download({ imageFile, text, options }: Props): ReactElement {
         }
 
         line += processedText.substring(start, curr);
-        start = curr;
-
         textCtx.fillText(line, 0, filledHeight);
+
+        start = curr;
         filledHeight += 18; //LINE_HEIGHT = 18
       }
-    }
-
-    function getCharWidthDict(
-      textCtx: CanvasRenderingContext2D
-    ): CharWidthDict {
-      const ascii =
-        " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      const charWidthDict: CharWidthDict = {};
-
-      for (let char of ascii) {
-        charWidthDict[char] = textCtx.measureText(char).width;
-      }
-
-      return charWidthDict;
     }
 
     function createPrint(
@@ -187,7 +177,6 @@ function Download({ imageFile, text, options }: Props): ReactElement {
   return (
     <div className={styles.download}>
       <div className={styles.mainContainer}>
-        <Loader />
         {created && downloadLink ? (
           <h2 className={styles.title}>
             <a href={downloadLink} download="script-to-print">
