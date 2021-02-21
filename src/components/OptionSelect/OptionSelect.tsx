@@ -24,7 +24,7 @@ function OptionSelect(props: Props): ReactElement {
 
   return (
     <div className={styles.optionSelect}>
-      <div className={styles.optionEnterContainer}>
+      <div className={styles.mainContainer}>
         <h2>
           <strong>3. Select options</strong>
         </h2>

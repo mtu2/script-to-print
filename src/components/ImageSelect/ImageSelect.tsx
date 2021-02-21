@@ -65,10 +65,8 @@ function ImageSelect(props: Props): ReactElement {
             <div className={styles.fileInfoContainer}>
               <PhotoIcon className={styles.photoIcon} />
               <p className={styles.fileName}>
-                {fileInfo && fileInfo.name}
-                <span className={styles.fileSize}>
-                  {fileInfo && fileInfo.sizeMb}
-                </span>
+                {fileInfo?.name}
+                <span className={styles.fileSize}>{fileInfo?.sizeMb}</span>
               </p>
             </div>
           </div>
@@ -88,7 +86,7 @@ function ImageSelect(props: Props): ReactElement {
     <div className={styles.imageSelect}>
       <div
         {...getRootProps()}
-        className={`${styles.dropzoneRoot} ${
+        className={`${styles.mainContainer} ${
           isDragActive && styles.dragActive
         }`}
       >

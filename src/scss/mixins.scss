@@ -1,0 +1,15 @@
+@mixin max-height-800px {
+  @media screen and (max-height: 800px) {
+    @content;
+  }
+}
+@mixin max-width-880px {
+  @media screen and (max-width: 880px) {
+    @content;
+  }
+}
+@mixin max-width-540px {
+  @media screen and (max-width: 540px) {
+    @content;
+  }
+}

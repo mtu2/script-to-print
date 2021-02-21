@@ -12,7 +12,7 @@ function TextSelect(props: Props): ReactElement {
 
   return (
     <div className={styles.textSelect}>
-      <div className={styles.textEnterContainer}>
+      <div className={styles.mainContainer}>
         <h2>
           <strong>2. Enter text below</strong>
         </h2>

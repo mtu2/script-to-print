@@ -1,11 +1,10 @@
 import React, { ReactElement, useState } from "react";
 import styles from "./App.module.scss";
-import Description from "./Description/Description";
-import Download from "./Download/Download";
 
 import ImageSelect, { ImageFile } from "./ImageSelect/ImageSelect";
 import OptionSelect, { Options } from "./OptionSelect/OptionSelect";
 import TextSelect from "./TextSelect/TextSelect";
+import Download from "./Download/Download";
 
 function App(): ReactElement {
   const [imageFile, setImageFile] = useState<ImageFile | null>(null);
@@ -71,14 +70,18 @@ function App(): ReactElement {
 
       {/* Main */}
       <div className={styles.main}>
-        <Description />
+        <div className={styles.description}>
+          <h1>Script to Print 🎞️</h1>
+          <p>
+            Create posters and wallpapers by combining your favourite movie
+            scripts and images
+          </p>
+        </div>
         {getComponent()}
       </div>
 
       {/* Footer */}
-      <footer className={styles.footer}>
-        <p>Made by Michael</p>
-      </footer>
+      <footer className={styles.footer}>Made by Michael</footer>
     </div>
   );
 }

@@ -1,3 +1,6 @@
+@import "../../scss/variables.scss";
+@import "../../scss/mixins.scss";
+
 .buttons {
   display: flex;
   justify-content: space-between;
@@ -10,7 +13,7 @@
     border-radius: 5px;
 
     font-size: 18px;
-    color: white;
+    color: $btn-font-color;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
 
     display: flex;
@@ -24,13 +27,13 @@
   }
 
   .continueBtn {
-    background: #6bb78e;
+    background: $continuebtn-bg-color;
     .icon {
       margin-left: 20px;
     }
   }
   .backBtn {
-    background: #5a5a5a;
+    background: $backbtn-bg-color;
     .icon {
       margin-right: 20px;
     }
@@ -38,5 +41,16 @@
 
   &.disableBack {
     justify-content: flex-end;
+  }
+}
+
+@include max-width-540px {
+  .buttons {
+    margin-left: 16px;
+    margin-right: 16px;
+
+    button {
+      box-shadow: none;
+    }
   }
 }

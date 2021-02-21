@@ -175,7 +175,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
 
   return (
     <div className={styles.download}>
-      <div className={styles.downloadContainer}>
+      <div className={styles.mainContainer}>
         {created && downloadLink ? (
           <h2>
             <a href={downloadLink} download="script-to-print">

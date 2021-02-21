@@ -1,6 +1,9 @@
+@import "../scss/mixins.scss";
+
 .app {
   width: 100vw;
-  min-height: 100vh;
+  min-height: 800px;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -12,6 +15,8 @@
     align-items: center;
 
     width: 100%;
+    top: 0;
+    position: fixed;
     padding: 24px 40px;
 
     p:hover {
@@ -21,13 +26,28 @@
   }
 
   .main {
-    margin-top: 60px;
+    margin-top: 20vh;
     width: 880px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .description {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 620px;
+      margin-bottom: 20px;
+
+      h1 {
+        margin-bottom: 20px;
+      }
+      p {
+        text-align: center;
+      }
+    }
   }
 
   .footer {
@@ -35,11 +55,54 @@
     justify-content: space-between;
     align-items: center;
 
-    padding: 24px 40px;
     width: 100%;
+    bottom: 0;
+    position: fixed;
+    padding: 24px 40px;
+    font-size: 14px;
+  }
+}
 
+@include max-height-800px {
+  .app {
+    height: 800px;
+
+    .main {
+      margin-top: 120px;
+    }
+  }
+}
+
+@include max-width-880px {
+  .app {
+    .main {
+      width: 95vw;
+    }
+    .nav {
+      padding-left: 2.5vw;
+      padding-right: 2.5vw;
+    }
+    .footer {
+      padding-left: 2.5vw;
+      padding-right: 2.5vw;
+    }
+  }
+}
+
+@include max-width-540px {
+  .app {
     p {
-      font-size: 14px;
+      font-size: 15px;
+    }
+
+    .main {
+      width: 100vw;
+
+      .description {
+        h1 {
+          font-size: 26px;
+        }
+      }
     }
   }
 }
