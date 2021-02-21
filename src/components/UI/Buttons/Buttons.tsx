@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import styles from "./Buttons.module.scss";
 
-import { ReactComponent as RightArrowIcon } from "../../icons/east-white-48dp.svg";
-import { ReactComponent as LeftArrowIcon } from "../../icons/west-white-48dp.svg";
+import { ReactComponent as RightArrowIcon } from "../../../icons/east-white-48dp.svg";
+import { ReactComponent as LeftArrowIcon } from "../../../icons/west-white-48dp.svg";
 
 interface Props {
   // callbacks

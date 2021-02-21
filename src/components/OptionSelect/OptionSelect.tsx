@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import Buttons from "../Buttons/Buttons";
+import Buttons from "../UI/Buttons/Buttons";
 import styles from "./OptionSelect.module.scss";
 
 export interface Options {
@@ -25,12 +25,12 @@ function OptionSelect(props: Props): ReactElement {
   return (
     <div className={styles.optionSelect}>
       <div className={styles.mainContainer}>
-        <h2>
+        <h2 className={styles.title}>
           <strong>3. Select options</strong>
         </h2>
-        <p>Capitalise all letters</p>
-        <p>Font: Courier</p>
-        <p>Scale factor: 4x</p>
+        <p className={styles.subtitle}>Capitalise all letters</p>
+        <p className={styles.subtitle}>Font: Courier</p>
+        <p className={styles.subtitle}>Scale factor: 4x</p>
       </div>
       <Buttons
         handleBack={props.handleBack}

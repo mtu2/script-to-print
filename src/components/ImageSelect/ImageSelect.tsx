@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useState } from "react";
-import Buttons from "../Buttons/Buttons";
+import Buttons from "../UI/Buttons/Buttons";
 
 import { FileWithPath, useDropzone } from "react-dropzone";
 import styles from "./ImageSelect.module.scss";
@@ -49,32 +49,30 @@ function ImageSelect(props: Props): ReactElement {
         return (
           <div className={styles.actionContainer}>
             <DropHereIcon className={styles.dropHereIcon} />
-            <h2>
+            <h2 className={styles.title}>
               <strong>1. Drag image here</strong> or{" "}
               <strong>select image</strong>
             </h2>
-            <p>Allowed files: .jpeg, .png</p>
+            <p className={styles.subtitle}>Allowed files: .jpeg, .png</p>
           </div>
         );
       case "DONE":
         return (
           <div className={styles.doneContainer}>
-            <h2>
+            <h2 className={styles.title}>
               <strong>Done!</strong> Upload received
             </h2>
             <div className={styles.fileInfoContainer}>
               <PhotoIcon className={styles.photoIcon} />
-              <p className={styles.fileName}>
-                {fileInfo?.name}
-                <span className={styles.fileSize}>{fileInfo?.sizeMb}</span>
-              </p>
+              <p className={styles.fileName}>{fileInfo?.name}</p>
+              <p className={styles.fileSize}>{fileInfo?.sizeMb}</p>
             </div>
           </div>
         );
       case "WRONG_FILE":
         return (
           <div className={styles.wrongFileContainer}>
-            <h2>
+            <h2 className={styles.title}>
               <strong>Incompatible file!</strong> Please submit a .jpeg or .png
             </h2>
           </div>

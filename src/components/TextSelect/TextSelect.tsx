@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from "react";
-import Buttons from "../Buttons/Buttons";
+import { isEmpty } from "../../utils/text";
+import Buttons from "../UI/Buttons/Buttons";
 import styles from "./TextSelect.module.scss";
 
 interface Props {
@@ -10,24 +11,31 @@ interface Props {
 function TextSelect(props: Props): ReactElement {
   const [text, setText] = useState("");
 
+  function showError() {
+    alert("Enter text");
+  }
+
   return (
     <div className={styles.textSelect}>
       <div className={styles.mainContainer}>
-        <h2>
+        <h2 className={styles.title}>
           <strong>2. Enter text below</strong>
         </h2>
-        <p>
+        <p className={styles.subtitle}>
           More text is required for larger images. Enter as much text as
           possible.
         </p>
         <textarea
           value={text}
+          placeholder={"Enter text..."}
           onChange={(ev) => setText(ev.target.value)}
         ></textarea>
       </div>
       <Buttons
         handleBack={props.handleBack}
-        handleContinue={() => props.handleContinue(text)}
+        handleContinue={() =>
+          isEmpty(text) ? showError() : props.handleContinue(text)
+        }
       />
     </div>
   );

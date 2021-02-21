@@ -1,23 +1,14 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import styles from "./Download.module.scss";
+import Loader from "../UI/Loader/Loader";
 import { ImageFile } from "../ImageSelect/ImageSelect";
 import { Options } from "../OptionSelect/OptionSelect";
+import { processText } from "../../utils/text";
 
 interface Props {
   imageFile: ImageFile;
   text: string;
   options: Options;
-}
-
-function processText(text: string, capitalise = false): string {
-  // capitalise and remove additional whitespace
-  // const processed = text.toUpperCase().replace(/\s+/g, " ");
-  let processed = text.replace(/\s+/g, " ");
-  if (capitalise) {
-    processed = processed.toUpperCase();
-  }
-
-  return processed;
 }
 
 function Download({ imageFile, text, options }: Props): ReactElement {
@@ -27,7 +18,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
   const textCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    (function loadImage() {
+    (function loadImage(): void {
       const reader = new FileReader();
 
       reader.onabort = () => console.log("File reading was aborted");
@@ -54,7 +45,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       reader.readAsDataURL(imageFile as Blob);
     })();
 
-    function drawCanvases(img: HTMLImageElement) {
+    function drawCanvases(img: HTMLImageElement): void {
       const imgCanvas = imgCanvasRef.current;
       const textCanvas = textCanvasRef.current;
 
@@ -112,7 +103,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       textCtx.fillRect(0, 0, width, height);
 
       // Set font styling
-      textCtx.font = `400 18px EB Garamond`; // USE OPPTIONS
+      textCtx.font = `400 18px EB Garamond`; // USE OPTIONS
       textCtx.fillStyle = "rgb(0, 0, 0)";
 
       let i = 0;
@@ -122,34 +113,39 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       let avgLineChars = 0;
 
       while (filledHeight < height) {
-        let line = processedText.substring(
-          i,
-          i + Math.min(0, avgLineChars - 50)
-        );
+        let line: string;
+        if (lineCount === 0) {
+          line = "";
 
-        while (textCtx.measureText(line).width < width) {
-          line += processedText[i];
+          while (textCtx.measureText(line).width < width) {
+            line += processedText[i];
+            if (i + 1 > processedText.length) i = 0;
+            else i++;
+          }
 
-          if (i + 1 > processedText.length) i = 0;
-          else i++;
+          avgLineChars = line.length;
+        } else {
+          line = processedText.substring(i, i + Math.min(0, avgLineChars - 50));
         }
 
         textCtx.fillText(line, 0, filledHeight);
         filledHeight += 18; //LINE_HEIGHT = 18
-
         lineCount++;
-        avgLineChars = Math.round(
-          (avgLineChars * lineCount + line.length) / (lineCount + 1)
-        );
       }
     }
+
+    function searchIndex(
+      text: string,
+      textCtx: CanvasRenderingContext2D,
+      width: number
+    ): void {}
 
     function createPrint(
       imgCtx: CanvasRenderingContext2D,
       textCtx: CanvasRenderingContext2D,
       width: number,
       height: number
-    ) {
+    ): void {
       const imgData = imgCtx.getImageData(0, 0, width, height);
       const textData = textCtx.getImageData(0, 0, width, height);
 
@@ -176,14 +172,15 @@ function Download({ imageFile, text, options }: Props): ReactElement {
   return (
     <div className={styles.download}>
       <div className={styles.mainContainer}>
+        <Loader />
         {created && downloadLink ? (
-          <h2>
+          <h2 className={styles.title}>
             <a href={downloadLink} download="script-to-print">
               Download
             </a>
           </h2>
         ) : (
-          <h2>Generating...</h2>
+          <h2 className={styles.title}>Generating...</h2>
         )}
       </div>
 

@@ -26,11 +26,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      max-width: 90%;
       margin-bottom: 40px;
 
       .fileInfoContainer {
-        display: flex;
+        display: grid;
         align-items: center;
+        grid-template-columns: 28px 1fr auto;
+        column-gap: 32px;
 
         padding: 4px 60px;
         background-color: white;
@@ -42,15 +46,19 @@
         .photoIcon {
           width: 28px;
           height: 28px;
-          margin-right: 32px;
           fill: #3bb5e9;
         }
+
         .fileName {
-          margin-bottom: 0px;
-          .fileSize {
-            font-size: 14px;
-            margin-left: 32px;
-          }
+          margin-top: 2px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .fileSize {
+          margin-top: 4px;
+          font-size: 14px;
         }
       }
     }
@@ -83,6 +91,13 @@
 @include max-width-540px {
   .imageSelect {
     .mainContainer {
+      .doneContainer {
+        .fileInfoContainer {
+          column-gap: 16px;
+          padding: 4px 24px;
+        }
+      }
+
       .dashedLine {
         left: 0px;
         width: 100%;
