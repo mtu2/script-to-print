@@ -2,4 +2,21 @@
 
 .download {
   @extend .mainComponent;
+
+  .mainContainer {
+    justify-content: center;
+
+    .doneContainer {
+      margin-bottom: 40px;
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+      }
+    }
+
+    .generatingContainer {
+      margin-bottom: 40px;
+    }
+  }
 }

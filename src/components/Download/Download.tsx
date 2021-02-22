@@ -13,12 +13,13 @@ interface Props {
 function Download({ imageFile, text, options }: Props): ReactElement {
   const [created, setCreated] = useState(false);
   const [downloadLink, setDownloadLink] = useState<string | null>(null);
+  const downloadAnchorRef = useRef<HTMLAnchorElement>(null);
   const imgCanvasRef = useRef<HTMLCanvasElement>(null);
   const textCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     (function loadImage(): void {
-      console.time("Create print");
+      // console.time("Create print");
       const reader = new FileReader();
 
       reader.onabort = () => console.log("File reading was aborted");
@@ -190,24 +191,43 @@ function Download({ imageFile, text, options }: Props): ReactElement {
           // i + 3 is alpha (the fourth element)
         }
       }
-
       // Put updated pixel data on img canvas
       imgCtx.putImageData(imgData, 0, 0);
-      console.timeEnd("Create print");
+      // console.timeEnd("Create print");
     }
   }, [imageFile, text, options]);
+
+  useEffect(() => {
+    // Start auto download
+    if (downloadAnchorRef.current) {
+      console.log("auto download");
+      downloadAnchorRef.current.click();
+    }
+  }, [downloadLink]);
 
   return (
     <div className={styles.download}>
       <div className={styles.mainContainer}>
         {created && downloadLink ? (
-          <h2 className={styles.title}>
-            <a href={downloadLink} download="script-to-print">
-              Download
-            </a>
-          </h2>
+          <div className={styles.doneContainer}>
+            <h2 className={styles.title}>
+              <strong>Done!</strong> Print created
+            </h2>
+            <p className={styles.subtitle}>
+              If you're download doesn't start automatically{" "}
+              <a
+                ref={downloadAnchorRef}
+                href={downloadLink}
+                download="script-to-print"
+              >
+                click here
+              </a>
+            </p>
+          </div>
         ) : (
-          <h2 className={styles.title}>Generating...</h2>
+          <div className={styles.generatingContainer}>
+            <h2 className={styles.title}>Generating...</h2>
+          </div>
         )}
       </div>
 
