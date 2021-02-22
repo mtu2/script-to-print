@@ -16,13 +16,27 @@ interface ImageFileInfo {
 }
 
 interface Props {
+  imageFile: ImageFile | null;
   handleContinue: (file: ImageFile) => void;
 }
 
+function getFileInfo(file: FileWithPath | null): ImageFileInfo | null {
+  if (!file) return null;
+
+  return {
+    name: file.name,
+    sizeMb: `${(file.size / 1000000).toFixed(2)}mb`,
+  };
+}
+
 function ImageSelect(props: Props): ReactElement {
-  const [file, setFile] = useState<ImageFile | null>(null);
-  const [fileInfo, setFileInfo] = useState<ImageFileInfo | null>(null);
-  const [displayContent, setDisplayContent] = useState("ACTION");
+  const [file, setFile] = useState<ImageFile | null>(props.imageFile);
+  const [fileInfo, setFileInfo] = useState<ImageFileInfo | null>(
+    getFileInfo(props.imageFile as FileWithPath)
+  );
+  const [displayContent, setDisplayContent] = useState(
+    props.imageFile ? "DONE" : "ACTION"
+  );
 
   const onDrop = useCallback((files: FileWithPath[]): void => {
     files.forEach((file: FileWithPath): void => {
@@ -34,10 +48,7 @@ function ImageSelect(props: Props): ReactElement {
       }
 
       setFile(file as ImageFile);
-      setFileInfo({
-        name: file.name,
-        sizeMb: `${(file.size / 1000000).toFixed(2)}mb`,
-      });
+      setFileInfo(getFileInfo(file));
       setDisplayContent("DONE");
     });
   }, []);

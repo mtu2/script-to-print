@@ -6,17 +6,19 @@ import { ReactComponent as LeftArrowIcon } from "../../../icons/west-white-48dp.
 
 interface Props {
   // callbacks
-  disableBack?: boolean;
-  disableContinue?: boolean;
   handleBack?: () => void;
   handleContinue?: () => void;
+  setDownload?: boolean;
+  disableBack?: boolean;
+  disableContinue?: boolean;
 }
 
 function Buttons({
-  disableBack = false,
-  disableContinue = false,
   handleBack,
   handleContinue,
+  setDownload = false,
+  disableBack = false,
+  disableContinue = false,
 }: Props): ReactElement {
   return (
     <div className={`${styles.buttons} ${disableBack && styles.disableBack}`}>
@@ -29,7 +31,14 @@ function Buttons({
           Back
         </button>
       )}
-      {!disableContinue && (
+      {!disableContinue && setDownload ? (
+        <button
+          onClick={handleContinue ? handleContinue : undefined}
+          className={styles.downloadBtn}
+        >
+          Create & Download
+        </button>
+      ) : (
         <button
           onClick={handleContinue ? handleContinue : undefined}
           className={styles.continueBtn}

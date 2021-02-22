@@ -7,7 +7,6 @@
   margin-top: 14px;
 
   button {
-    width: 200px;
     height: 40px;
     border-radius: 5px;
 
@@ -25,13 +24,21 @@
     }
   }
 
+  .continueBtn,
+  .downloadBtn {
+    width: 220px;
+  }
   .continueBtn {
     background: $continuebtn-bg-color;
     .icon {
       margin-left: 20px;
     }
   }
+  .downloadBtn {
+    background: $downloadbtn-bg-color;
+  }
   .backBtn {
+    width: 180px;
     background: $backbtn-bg-color;
     .icon {
       margin-right: 20px;
@@ -49,9 +56,15 @@
     margin-right: 16px;
 
     button {
-      width: 160px;
       font-size: 16px;
       box-shadow: none;
+    }
+    .continueBtn,
+    .downloadBtn {
+      width: 200px;
+    }
+    .backBtn {
+      width: 160px;
     }
   }
 }
@@ -63,7 +76,13 @@
 
     button {
       width: 50%;
+      font-size: 15px;
       border-radius: 0;
+    }
+    .continueBtn,
+    .downloadBtn,
+    .backBtn {
+      width: 50%;
     }
   }
 }

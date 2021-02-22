@@ -134,14 +134,8 @@ function Download({ imageFile, text, options }: Props): ReactElement {
 
           // If current index is greater than length of text
           if (curr + 1 >= processedText.length) {
-            try {
-              line += processedText.substring(start, curr);
-              start = curr = 0;
-            } catch (err) {
-              console.log(start);
-              console.log(curr);
-              console.log(err);
-            }
+            line += processedText.substring(start, curr);
+            start = curr = 0;
           } else {
             curr++;
           }
@@ -176,6 +170,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       width: number,
       height: number
     ): void {
+      // Get pixel data for both canvases
       const imgData = imgCtx.getImageData(0, 0, width, height);
       const textData = textCtx.getImageData(0, 0, width, height);
 
@@ -183,6 +178,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       const textPixels = textData.data;
 
       for (let i = 0; i < imgPixels.length; i += 4) {
+        // If pixel on text canvas is white, set pixel on img canvas to white
         if (
           textPixels[i] === 255 &&
           textPixels[i + 1] === 255 &&
@@ -195,6 +191,7 @@ function Download({ imageFile, text, options }: Props): ReactElement {
         }
       }
 
+      // Put updated pixel data on img canvas
       imgCtx.putImageData(imgData, 0, 0);
       console.timeEnd("Create print");
     }

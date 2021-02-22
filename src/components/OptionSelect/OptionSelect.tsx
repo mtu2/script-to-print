@@ -9,7 +9,7 @@ export interface Options {
   scaleFactor: number;
 }
 
-const DEFAULT_OPTIONS = {
+export const DEFAULT_OPTIONS = {
   capitalise: false,
   font: "EB Garamond",
   fontSize: 18,
@@ -30,13 +30,14 @@ const WEB_SAFE_FONTS = [
 ];
 
 interface Props {
-  handleBack: () => void;
+  options: Options;
+  handleBack: (options: Options) => void;
   handleContinue: (options: Options) => void;
 }
 
 function OptionSelect(props: Props): ReactElement {
-  const [options, setOptions] = useState(DEFAULT_OPTIONS);
-  const [isDefault, setIsDefault] = useState(true);
+  const [options, setOptions] = useState(props.options);
+  const [isDefault, setIsDefault] = useState(props.options === DEFAULT_OPTIONS);
 
   const handleIsDefaultClick = (
     ev: React.ChangeEvent<HTMLInputElement>
@@ -53,8 +54,12 @@ function OptionSelect(props: Props): ReactElement {
   ): void => {
     if (option === "fontSize" || option === "scaleFactor") {
       if (+ev.target.value < 1) return;
+      setOptions((curr) => ({ ...curr, [option]: +ev.target.value }));
+    } else if (option === "capitalise") {
+      setOptions((curr) => ({ ...curr, [option]: !curr[option] }));
+    } else {
+      setOptions((curr) => ({ ...curr, [option]: ev.target.value }));
     }
-    setOptions((curr) => ({ ...curr, [option]: ev.target.value }));
   };
 
   return (
@@ -63,58 +68,62 @@ function OptionSelect(props: Props): ReactElement {
         <h2 className={styles.title}>
           <strong>3. Select options</strong>
         </h2>
-        <label>
-          Use default settings:
-          <input
-            type="checkbox"
-            checked={isDefault}
-            onChange={handleIsDefaultClick}
-          />
-        </label>
-        <label>
-          Capitalise all letters:
-          <input
-            type="checkbox"
-            checked={options.capitalise}
-            onChange={(ev) => handleChangeOption("capitalise", ev)}
-            disabled={isDefault}
-          />
-        </label>
-        <label>
-          Font:
-          <select
-            value={options.font}
-            onChange={(ev) => handleChangeOption("font", ev)}
-          >
-            {WEB_SAFE_FONTS.map((font, index) => (
-              <option value={font} key={index}>
-                {font}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Font size:
-          <input
-            type="number"
-            value={options.fontSize}
-            onChange={(ev) => handleChangeOption("fontSize", ev)}
-            disabled={isDefault}
-          />{" "}
-        </label>
-        <label>
-          Scale factor:
-          <input
-            type="number"
-            value={options.scaleFactor}
-            onChange={(ev) => handleChangeOption("scaleFactor", ev)}
-            disabled={isDefault}
-          />
-        </label>
+        <form>
+          <label className={styles.defaultLabel}>
+            Use default settings
+            <input
+              type="checkbox"
+              checked={isDefault}
+              onChange={handleIsDefaultClick}
+            />
+          </label>
+          <label className={`${isDefault && styles.disabled}`}>
+            Capitalise all letters
+            <input
+              type="checkbox"
+              checked={options.capitalise}
+              onChange={(ev) => handleChangeOption("capitalise", ev)}
+              disabled={isDefault}
+            />
+          </label>
+          <label className={`${isDefault && styles.disabled}`}>
+            Font:
+            <select
+              value={options.font}
+              onChange={(ev) => handleChangeOption("font", ev)}
+              disabled={isDefault}
+            >
+              {WEB_SAFE_FONTS.map((font, index) => (
+                <option value={font} key={index}>
+                  {font}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={`${isDefault && styles.disabled}`}>
+            Font size:
+            <input
+              type="number"
+              value={options.fontSize}
+              onChange={(ev) => handleChangeOption("fontSize", ev)}
+              disabled={isDefault}
+            />{" "}
+          </label>
+          <label className={`${isDefault && styles.disabled}`}>
+            Scale factor:
+            <input
+              type="number"
+              value={options.scaleFactor}
+              onChange={(ev) => handleChangeOption("scaleFactor", ev)}
+              disabled={isDefault}
+            />
+          </label>
+        </form>
       </div>
       <Buttons
-        handleBack={props.handleBack}
+        handleBack={() => props.handleBack(options)}
         handleContinue={() => props.handleContinue(options)}
+        setDownload
       />
     </div>
   );

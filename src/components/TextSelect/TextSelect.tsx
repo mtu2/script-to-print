@@ -4,12 +4,13 @@ import Buttons from "../UI/Buttons/Buttons";
 import styles from "./TextSelect.module.scss";
 
 interface Props {
-  handleBack: () => void;
+  text: string;
+  handleBack: (text: string) => void;
   handleContinue: (text: string) => void;
 }
 
 function TextSelect(props: Props): ReactElement {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(props.text);
 
   function showError() {
     alert("Enter text");
@@ -32,7 +33,7 @@ function TextSelect(props: Props): ReactElement {
         ></textarea>
       </div>
       <Buttons
-        handleBack={props.handleBack}
+        handleBack={() => props.handleBack(text)}
         handleContinue={() =>
           isEmpty(text) ? showError() : props.handleContinue(text)
         }

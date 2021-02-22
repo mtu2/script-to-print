@@ -2,14 +2,17 @@ import React, { ReactElement, useState } from "react";
 import styles from "./App.module.scss";
 
 import ImageSelect, { ImageFile } from "./ImageSelect/ImageSelect";
-import OptionSelect, { Options } from "./OptionSelect/OptionSelect";
+import OptionSelect, {
+  Options,
+  DEFAULT_OPTIONS,
+} from "./OptionSelect/OptionSelect";
 import TextSelect from "./TextSelect/TextSelect";
 import Download from "./Download/Download";
 
 function App(): ReactElement {
   const [imageFile, setImageFile] = useState<ImageFile | null>(null);
   const [text, setText] = useState("");
-  const [options, setOptions] = useState<Options | null>(null);
+  const [options, setOptions] = useState<Options>(DEFAULT_OPTIONS);
   const [showComponent, setShowComponent] = useState("IMAGE_SELECT");
 
   function getComponent() {
@@ -17,7 +20,8 @@ function App(): ReactElement {
       case "IMAGE_SELECT":
         return (
           <ImageSelect
-            handleContinue={(enteredFile: ImageFile) => {
+            imageFile={imageFile}
+            handleContinue={(enteredFile: ImageFile): void => {
               setImageFile(enteredFile);
               setShowComponent("TEXT_SELECT");
             }}
@@ -26,10 +30,12 @@ function App(): ReactElement {
       case "TEXT_SELECT":
         return (
           <TextSelect
-            handleBack={() => {
+            text={text}
+            handleBack={(enteredText: string): void => {
+              setText(enteredText);
               setShowComponent("IMAGE_SELECT");
             }}
-            handleContinue={(enteredText: string) => {
+            handleContinue={(enteredText: string): void => {
               setText(enteredText);
               setShowComponent("OPTION_SELECT");
             }}
@@ -38,10 +44,12 @@ function App(): ReactElement {
       case "OPTION_SELECT":
         return (
           <OptionSelect
-            handleBack={() => {
+            options={options}
+            handleBack={(enteredOptions: Options): void => {
+              setOptions(enteredOptions);
               setShowComponent("TEXT_SELECT");
             }}
-            handleContinue={(enteredOptions: Options) => {
+            handleContinue={(enteredOptions: Options): void => {
               setOptions(enteredOptions);
               setShowComponent("DOWNLOAD");
             }}
@@ -52,7 +60,7 @@ function App(): ReactElement {
           <Download
             imageFile={imageFile as ImageFile}
             text={text}
-            options={options as Options}
+            options={options}
           />
         );
       default:
