@@ -95,52 +95,78 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       height: number
     ): void {
       // Draw entered text on canvas with given width and height
-      const processedText = processText(text);
+      const processedText = processText(text, options.capitalise);
 
       // Set background white
       textCtx.fillStyle = "#ffffff"; //white
       textCtx.fillRect(0, 0, width, height);
 
       // Set font styling
-      textCtx.font = `400 18px EB Garamond`; // USE OPTIONS
+      textCtx.font = `400 ${options.fontSize}px ${options.font}`; // USE OPTIONS
       textCtx.fillStyle = "rgb(0, 0, 0)";
 
-      // Set variables
+      // Set empty char width dictionary
       const charWidthDict: {
         [key: string]: number;
       } = {};
 
+      // Set loop variables
       let start = 0;
       let curr = 0;
-      let filledHeight = 18;
+      let filledHeight = options.fontSize;
 
       while (filledHeight < height) {
+        // Set line variables
         let line = "";
         let lineWidth = 0;
+        let isDone = false;
 
-        // 75px buffer for text - as lineWidth seems to be larger than actual (?)
-        while (lineWidth < width + 75) {
+        while (!isDone) {
           const char = processedText[curr];
 
+          // Add to width of char to dictionary if doesn't exist
           if (!charWidthDict.hasOwnProperty(char)) {
             charWidthDict[char] = textCtx.measureText(char).width;
           }
 
+          // Add char width to line (doesn't account for kerning)
           lineWidth += charWidthDict[char];
 
+          // If current index is greater than length of text
           if (curr + 1 >= processedText.length) {
-            line += processedText.substring(start, curr);
-            start = curr = 0;
+            try {
+              line += processedText.substring(start, curr);
+              start = curr = 0;
+            } catch (err) {
+              console.log(start);
+              console.log(curr);
+              console.log(err);
+            }
           } else {
             curr++;
           }
+
+          // If calculated line width is larger than width of canvas (+ 75px)
+          if (lineWidth >= width + 75) {
+            line += processedText.substring(start, curr);
+            start = curr;
+
+            // Check if actual line width (accounts for kerning) is larger than canvas width
+            const actualLineWidth = textCtx.measureText(line).width;
+
+            if (actualLineWidth > width) {
+              // If yes, exit loop
+              isDone = true;
+            } else {
+              // If not, set calculated line width to actual and continue
+              lineWidth = actualLineWidth;
+            }
+          }
         }
 
-        line += processedText.substring(start, curr);
+        // Add line to text canvas and adjust filled height
         textCtx.fillText(line, 0, filledHeight);
-
-        start = curr;
-        filledHeight += 18; //LINE_HEIGHT = 18
+        filledHeight += options.fontSize;
       }
     }
 
