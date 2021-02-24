@@ -42,7 +42,6 @@ function ImageSelect(props: Props): ReactElement {
     files.forEach((file: FileWithPath): void => {
       if (file.type !== "image/jpeg" && file.type !== "image/png") {
         // If file is not an image file
-        console.log("wrong file type given");
         setDisplayContent("WRONG_FILE");
         return;
       }

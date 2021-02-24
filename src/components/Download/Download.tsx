@@ -22,8 +22,8 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       // console.time("Create print");
       const reader = new FileReader();
 
-      reader.onabort = () => console.log("File reading was aborted");
-      reader.onerror = () => console.log("File reading has failed");
+      // reader.onabort = () => console.log("File reading was aborted");
+      // reader.onerror = () => console.log("File reading has failed");
       reader.onload = (ev) => {
         // if ev.target.result is a HTMLImageElement
         if (
@@ -200,7 +200,6 @@ function Download({ imageFile, text, options }: Props): ReactElement {
   useEffect(() => {
     // Start auto download
     if (downloadAnchorRef.current) {
-      console.log("auto download");
       downloadAnchorRef.current.click();
     }
   }, [downloadLink]);

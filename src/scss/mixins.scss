@@ -1,5 +1,5 @@
-@mixin max-height-800px {
-  @media screen and (max-height: 800px) {
+@mixin mobile-device {
+  @media only screen and (hover: none) and (pointer: coarse) {
     @content;
   }
 }

@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styles from "./App.module.scss";
 
 import ImageSelect, { ImageFile } from "./ImageSelect/ImageSelect";
@@ -14,6 +14,12 @@ function App(): ReactElement {
   const [text, setText] = useState("");
   const [options, setOptions] = useState<Options>(DEFAULT_OPTIONS);
   const [showComponent, setShowComponent] = useState("IMAGE_SELECT");
+
+  useEffect(() => {
+    // Sets vh css variable - used for mobile devices
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }, []);
 
   function getComponent() {
     switch (showComponent) {
