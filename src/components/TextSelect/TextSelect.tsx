@@ -13,7 +13,7 @@ function TextSelect(props: Props): ReactElement {
   const [text, setText] = useState(props.text);
 
   function showError() {
-    alert("Enter text");
+    alert("Enter text to continue");
   }
 
   return (

@@ -2,17 +2,14 @@
 
 .download {
   @extend .mainComponent;
+  margin-bottom: 54px;
+  // replicate buttons height + margin (so vertical positioning is consistent when going from option -> download
 
   .mainContainer {
     justify-content: center;
 
     .doneContainer {
       margin-bottom: 40px;
-
-      a {
-        color: inherit;
-        text-decoration: underline;
-      }
     }
 
     .generatingContainer {

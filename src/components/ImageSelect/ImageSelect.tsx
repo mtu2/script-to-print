@@ -102,12 +102,11 @@ function ImageSelect(props: Props): ReactElement {
         <div className={styles.dashedLine} />
         {getContent()}
       </div>
-      {file && (
-        <Buttons
-          handleContinue={() => props.handleContinue(file)}
-          disableBack
-        />
-      )}
+      <Buttons
+        handleContinue={file ? () => props.handleContinue(file) : undefined}
+        disableBack
+        disableContinue={file === null}
+      />
     </div>
   );
 }

@@ -1,0 +1,16 @@
+.footer {
+  width: 100%;
+  padding: 24px 40px;
+  font-size: 14px;
+
+  a {
+    height: 16px;
+    width: 16px;
+    margin: 0px 3px;
+
+    .socialIcon {
+      height: 16px;
+      vertical-align: bottom; // not sure why neccessary (otherwise svg floats)
+    }
+  }
+}

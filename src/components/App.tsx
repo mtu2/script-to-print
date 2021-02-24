@@ -8,6 +8,8 @@ import OptionSelect, {
 } from "./OptionSelect/OptionSelect";
 import TextSelect from "./TextSelect/TextSelect";
 import Download from "./Download/Download";
+import Navbar from "./Navbar/Navbar";
+import Footer from "./Footer/Footer";
 
 function App(): ReactElement {
   const [imageFile, setImageFile] = useState<ImageFile | null>(null);
@@ -17,9 +19,22 @@ function App(): ReactElement {
 
   useEffect(() => {
     // Sets vh css variable - used for mobile devices
-    let vh = window.innerHeight * 0.01;
+    const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }, []);
+
+  function handleReset() {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to reset your work?"
+    );
+
+    if (isConfirmed) {
+      setImageFile(null);
+      setText("");
+      setOptions(DEFAULT_OPTIONS);
+      setShowComponent("IMAGE_SELECT");
+    }
+  }
 
   function getComponent() {
     switch (showComponent) {
@@ -77,10 +92,7 @@ function App(): ReactElement {
   return (
     <div className={styles.app}>
       {/* Header */}
-      <nav className={styles.nav}>
-        <p className={styles.name}>script to print</p>
-        <p className={styles.help}>how to use?</p>
-      </nav>
+      <Navbar onReset={handleReset} />
 
       {/* Main */}
       <div className={styles.main}>
@@ -95,7 +107,7 @@ function App(): ReactElement {
       </div>
 
       {/* Footer */}
-      <footer className={styles.footer}>Made by Michael</footer>
+      <Footer />
     </div>
   );
 }

@@ -62,9 +62,9 @@ function Download({ imageFile, text, options }: Props): ReactElement {
       const height = img.height * options.scaleFactor;
 
       // Set width and height of canvases
-      textCanvas.hidden = imgCanvas.hidden = true;
       textCanvas.width = imgCanvas.width = width;
       textCanvas.height = imgCanvas.height = height;
+      textCanvas.hidden = imgCanvas.hidden = true;
 
       // Draw image on image canvas
       drawImgCanvas(imgCtx, img, width, height);
@@ -230,8 +230,8 @@ function Download({ imageFile, text, options }: Props): ReactElement {
         )}
       </div>
 
-      <canvas ref={imgCanvasRef}></canvas>
-      <canvas ref={textCanvasRef}></canvas>
+      <canvas ref={imgCanvasRef} hidden></canvas>
+      <canvas ref={textCanvasRef} hidden></canvas>
     </div>
   );
 }

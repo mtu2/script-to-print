@@ -15,20 +15,6 @@
   justify-content: space-between;
   align-items: center;
 
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 100%;
-    padding: 24px 40px;
-
-    p:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-
   .main {
     margin-bottom: 7.5vh;
     width: 880px;
@@ -52,12 +38,6 @@
         text-align: center;
       }
     }
-  }
-
-  .footer {
-    width: 100%;
-    padding: 24px 40px;
-    font-size: 14px;
   }
 }
 

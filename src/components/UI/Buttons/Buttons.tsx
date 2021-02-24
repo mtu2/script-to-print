@@ -31,22 +31,23 @@ function Buttons({
           Back
         </button>
       )}
-      {!disableContinue && setDownload ? (
-        <button
-          onClick={handleContinue ? handleContinue : undefined}
-          className={styles.downloadBtn}
-        >
-          Create & Download
-        </button>
-      ) : (
-        <button
-          onClick={handleContinue ? handleContinue : undefined}
-          className={styles.continueBtn}
-        >
-          Continue
-          <RightArrowIcon className={styles.icon} />
-        </button>
-      )}
+      {!disableContinue &&
+        (setDownload ? (
+          <button
+            onClick={handleContinue ? handleContinue : undefined}
+            className={styles.downloadBtn}
+          >
+            Create & Download
+          </button>
+        ) : (
+          <button
+            onClick={handleContinue ? handleContinue : undefined}
+            className={styles.continueBtn}
+          >
+            Continue
+            <RightArrowIcon className={styles.icon} />
+          </button>
+        ))}
     </div>
   );
 }
