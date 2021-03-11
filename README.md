@@ -3,6 +3,7 @@
 
 Create posters and wallpapers by combining your favourite movie scripts/books/lyrics and images. Script to Print utilises the HTML5 Canvas API to imprint and overlay images on text via pixel manipulation.
 
+🔗 Link: [script-to-print.mttu.dev](https://script-to-print.mttu.dev/)\
 🛠 Built with: `TypeScript, React, SASS`
 
 [![Script to Print Screen Shot][product-screenshot]](https://script-to-print.mttu.dev)
